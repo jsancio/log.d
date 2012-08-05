@@ -681,7 +681,9 @@ unittest
     assert(testConfig.matchesVerboseFilter("file", 3));
 
     // assert vmodule entries
-    assert(testConfig.matchesVerboseFilter("std" ~ dirSeparator ~ "logging.d", 2));
+    assert(testConfig.matchesVerboseFilter(
+            "std" ~ dirSeparator ~ "logging.d",
+            2));
     assert(testConfig.matchesVerboseFilter("module.d", 0));
 
     // === test changing the command line flags ===
@@ -967,22 +969,36 @@ vlog(6)("Don't log this message");
         assert(!testConfig.matchesVerboseFilter("amodule", 1));
 
         // Test *
-        assert(testConfig.matchesVerboseFilter("package"~dirSeparator~"another", 3));
-        assert(testConfig.matchesVerboseFilter("package"~dirSeparator~"another.d", 3));
-        assert(!testConfig.matchesVerboseFilter("package"~dirSeparator~"dontknow", 3));
+        assert(testConfig.matchesVerboseFilter(
+                "package" ~ dirSeparator ~ "another",
+                3));
+        assert(testConfig.matchesVerboseFilter(
+                "package" ~ dirSeparator ~ "another.d",
+                3));
+        assert(!testConfig.matchesVerboseFilter(
+                "package" ~ dirSeparator ~ "dontknow",
+                3));
 
         assert(testConfig.matchesVerboseFilter("evenmore", 2));
         assert(testConfig.matchesVerboseFilter("evenmore.d", 2));
-        assert(!testConfig.matchesVerboseFilter("package"~dirSeparator~"evenmore.d", 2));
+        assert(!testConfig.matchesVerboseFilter(
+                "package" ~ dirSeparator ~ "evenmore.d",
+                2));
 
         // Test ?
         assert(testConfig.matchesVerboseFilter("cats.d", 4));
         assert(!testConfig.matchesVerboseFilter("cat", 4));
 
         // Test * and ?
-        assert(testConfig.matchesVerboseFilter("package"~dirSeparator~"dogs.d", 1));
-        assert(!testConfig.matchesVerboseFilter("package"~dirSeparator~"doggies.d", 1));
-        assert(!testConfig.matchesVerboseFilter("package"~dirSeparator~"horse", 1));
+        assert(testConfig.matchesVerboseFilter(
+                "package" ~ dirSeparator ~ "dogs.d",
+                1));
+        assert(!testConfig.matchesVerboseFilter(
+                "package" ~ dirSeparator ~ "doggies.d",
+                1));
+        assert(!testConfig.matchesVerboseFilter(
+                "package" ~ dirSeparator ~ "horse",
+                1));
 
         // Test that it can match any of the entries
         assert(testConfig.matchesVerboseFilter("evenmore.d", 10));
@@ -1301,7 +1317,11 @@ unittest
     logger.log(message);
     foreach(key, ref data; TestWriter.writers)
     {
-        if(startsWith(key, "dir" ~ dirSeparator) && data.lines.length == 2) ++passed;
+        if(startsWith(key, "dir" ~ dirSeparator) &&
+           data.lines.length == 2)
+        {
+            ++passed;
+        }
         else assert(data.lines.length == 0);
     }
     assert(passed == 1);
