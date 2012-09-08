@@ -1119,8 +1119,7 @@ vlog(2)("Verbose message is not logged");
        Implementation of the $(D Logger) interface used to persiste log messages
 
        This property allows the caller to change and configure the backend
-       _logger to a different $(D Logger). It will throw an exception if it is
-       changed after a logging call has been made.
+       _logger to a different $(D Logger).
 
        The default value a $(D FileLogger).
 
@@ -1149,22 +1148,16 @@ void main(string[] args)
         enforce(_rwmutex.writer().tryLock());
         scope(exit) _rwmutex.writer().unlock();
 
-        /*
-           it is an error if the user tries to init after the logger has been
-           used
-         */
-        enforce(!_loggerUsed);
+        auto temp_logger = _logger;
         _logger = logger;
 
-        return _logger;
+        return temp_logger;
     }
     /// ditto
     @property shared(Logger) logger()
     {
         synchronized(_rwmutex.reader())
         {
-            // Somebody asked for the logger don't allow changing it
-            _loggerUsed = true;
             return _logger;
         }
     }
@@ -1218,7 +1211,6 @@ void main(string[] args)
     private string _vmodule;
 
     // backend logger variables
-    private bool _loggerUsed;
     private shared Logger _logger;
 
     private ReadWriteMutex _rwmutex;
