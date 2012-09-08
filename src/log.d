@@ -1781,7 +1781,7 @@ void main(string[] args)
             static const string secondFormat = "%11$.2d";
 
             auto result = appender!string();
-         
+
             enum State
             {
                 start,
@@ -1983,14 +1983,14 @@ assert(loggerConfig.severitySymbols[Severity.fatal] == '1');
 
            The parameter should either by $(D null) or be a length of
            $(D Severity.max + 1).
-        
+
            If the value is not null the value stored in $(I prefixes[i]) will be
            used as the prefix for severity $(I i), where $(I i) is a value
            defined in $(D Severity). For example the file name for severity
            error will have the prefix $(D fileNamePrefixes[Severity.error]). If
            an entry in the array contains the empty string, then no log file is
            created for that severity.
-        
+
            If the value is null then log file names are
            $(I [program].[hostname].[user].[severity].log.[datetime].[pid]). For
            example if the program is $(I hello), the host name is
@@ -2293,7 +2293,7 @@ void name(string[] args) {
 
             struct_stat64 lstatbuf = void;
             if (lstat64(toStringz(linkName), &lstatbuf) == 0 &&
-                lstatbuf.st_mode & S_IFMT) 
+                lstatbuf.st_mode & S_IFMT)
             {
                 remove(linkName);
             }
@@ -2632,7 +2632,7 @@ The rich template support both binary (e.g. $(D ==), $(D >), etc) and unary
 translated to $(D a op b). For the unary operation the call $(D rich!"!"(a)) is
 translated to $(D !a). The supported operations are: $(D ==), $(D !=), $(D >),
 $(D >=), $(D <), $(D <=), $(D &&), $(D ||) and $(D !).
-   
+
 Example:
 ---
 auto value = rich!"=="(1, 1);
