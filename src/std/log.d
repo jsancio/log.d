@@ -631,7 +631,7 @@ final class NoopLogFilter
                                                      string file = null)
     { return this; }
 
-    private this() {}
+    private pure this() {}
 
     private static immutable NoopLogFilter _singleton;
 
@@ -1239,7 +1239,7 @@ unittest
     TestWriter.clear();
     passed = 0;
     message.severity = Severity.info;
-    auto logger = new shared(FileLogger)(loggerConfig);
+    auto logger = cast(shared) new FileLogger(loggerConfig);
     logger.log(message);
     foreach(key, ref data; TestWriter.writers)
     {
@@ -1252,7 +1252,7 @@ unittest
     TestWriter.clear();
     passed = 0;
     message.severity = Severity.warning;
-    logger = new shared(FileLogger)(loggerConfig);
+    logger = cast(shared) new FileLogger(loggerConfig);
     logger.log(message);
     foreach(key, ref data; TestWriter.writers)
     {
@@ -1269,7 +1269,7 @@ unittest
 
     loggerConfig.logToStderr = true;
     loggerConfig.stderrThreshold = Severity.error;
-    logger = new shared(FileLogger)(loggerConfig);
+    logger = cast(shared) new FileLogger(loggerConfig);
     logger.log(message);
     foreach(key, ref data; TestWriter.writers)
     {
@@ -1286,7 +1286,7 @@ unittest
     loggerConfig.logToStderr = false;
     loggerConfig.alsoLogToStderr = true;
     loggerConfig.stderrThreshold = Severity.error;
-    logger = new shared(FileLogger)(loggerConfig);
+    logger = cast(shared) new FileLogger(loggerConfig);
     logger.log(message);
     foreach(key, ref data; TestWriter.writers)
     {
@@ -1305,7 +1305,7 @@ unittest
 
     loggerConfig.alsoLogToStderr = false;
     loggerConfig.logDirectory = "dir";
-    logger = new shared(FileLogger)(loggerConfig);
+    logger = cast(shared) new FileLogger(loggerConfig);
     logger.log(message);
     foreach(key, ref data; TestWriter.writers)
     {
@@ -1325,7 +1325,7 @@ unittest
 
     loggerConfig.logDirectory = "";
     loggerConfig.bufferSize = 32;
-    logger = new shared(FileLogger)(loggerConfig);
+    logger = cast(shared) new FileLogger(loggerConfig);
     logger.log(message);
     foreach(key, ref data; TestWriter.writers)
     {
@@ -1339,7 +1339,7 @@ unittest
     passed = 0;
     loggerConfig = FileLogger.Configuration.create();
     loggerConfig.severitySymbols = "12345";
-    logger = new shared(FileLogger)(loggerConfig);
+    logger = cast(shared) new FileLogger(loggerConfig);
     logger.log(message);
     foreach(key, ref data; TestWriter.writers)
     {
@@ -1357,7 +1357,7 @@ unittest
     message.severity = Severity.warning;
     loggerConfig = FileLogger.Configuration.create();
     loggerConfig.fileNamePrefixes(["F", "C", "E", "", "I"]);
-    logger = new shared(FileLogger)(loggerConfig);
+    logger = cast(shared) new FileLogger(loggerConfig);
     logger.log(message);
     foreach(key, ref data; TestWriter.writers)
     {
@@ -2289,10 +2289,10 @@ void name(string[] args) {
         else version(Posix)
         {
             import core.sys.posix.sys.stat; // : S_IFMT
-            import std.file; //: struct_stat64, lstat64;
+            import std.file; //: stat_t, lstat;
 
-            struct_stat64 lstatbuf = void;
-            if (lstat64(toStringz(linkName), &lstatbuf) == 0 &&
+            stat_t lstatbuf = void;
+            if (lstat(toStringz(linkName), &lstatbuf) == 0 &&
                 lstatbuf.st_mode & S_IFMT)
             {
                 remove(linkName);
@@ -2747,7 +2747,7 @@ shared static this()
     try loggerConfig.parseCommandLine(args);
     catch(Exception e) { /+ ignore any error +/ }
 
-    auto logger = new shared(FileLogger)(loggerConfig);
+    auto logger = cast(shared) new FileLogger(loggerConfig);
     config = new Configuration(logger);
 
     try config.parseCommandLine(args);
