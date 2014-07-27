@@ -640,7 +640,7 @@ final class NoopLogFilter
 
 /++
 Defines the severity levels supported by the logging library. Should be used
-in conjuntion with the log template. See $(LREF log) for an explanation of
+in conjunction with the log template. See $(LREF log) for an explanation of
 their semantic.
 +/
 
@@ -1210,7 +1210,7 @@ void main(string[] args)
     private int[] _moduleLevels;
     private string _vmodule;
 
-    // backend logger variables
+    // back-end logger variables
     private shared Logger _logger;
 
     private ReadWriteMutex _rwmutex;

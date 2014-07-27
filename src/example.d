@@ -16,7 +16,7 @@ void main(string[] args)
     {
         info.when(every(9))("Every nine");
 
-        if(info.willLog)
+        if (info.willLog)
         {
             auto message = "Cool message";
             // perform some complex operation
@@ -26,7 +26,7 @@ void main(string[] args)
     }
 
     try critical("Critical message");
-    catch(CriticalException e)
+    catch (CriticalException e)
     {
         // shutdown application...
     }
