@@ -133,7 +133,7 @@ $(BOOKTABLE Description of supported severities.,
          $(TD Logs an error severity message. Error _log messages are disable
               at compiled time by setting the version to $(I strip_log_error).
               Error _log messages are disable at run time by setting the
-              minimun severity to $(LREF Severity.fatal) or
+              minimum severity to $(LREF Severity.fatal) or
               $(LREF Severity.critical) in $(LREF Configuration). Disabling
               _error _log messages at compile time or at run time also disables
               lower severity messages, e.g. warning and info.))
@@ -274,7 +274,7 @@ unittest
 
 /++
 Conditionally records a log message by checking the severity level and any
-user defined condition. Instances of LogFilter are alised by the $(LREF log) and
+user defined condition. Instances of LogFilter are aliased by the $(LREF log) and
 $(LREF vlog) template and the $(LREF fatal), $(LREF dfatal), $(LREF critical),
 $(LREF error), $(LREF warning) and $(LREF info) aliases.
 
@@ -789,7 +789,7 @@ void main(string[] args)
     config.parseCommandLine(args);
 }
 ---
-       This example overrites the default for the minimum severity property and
+       This example overwrites the default for the minimum severity property and
        later configures logging to any configuration option passed through
        the command line.
 
@@ -1022,7 +1022,7 @@ vlog(6)("Don't log this message");
        The format of the configuration string is as follow
        $(I [pattern]=[level],...), where $(I [pattern]) may contain any
        character allowed in a file name and $(I [level]) is convertible to an
-       integer. For an exmplanation of how $(I [pattern]) matches the source
+       integer. For an explanation of how $(I [pattern]) matches the source
        file please see $(XREF path, globMatch).
 
        For every $(I [pattern]=[level]) in the configuration string an entry is
@@ -1116,9 +1116,9 @@ vlog(2)("Verbose message is not logged");
     }
 
     /++
-       Implementation of the $(D Logger) interface used to persiste log messages
+       Implementation of the $(D Logger) interface used to persist log messages
 
-       This property allows the caller to change and configure the backend
+       This property allows the caller to change and configure the back-end
        _logger to a different $(D Logger).
 
        The default value a $(D FileLogger).
