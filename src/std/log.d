@@ -133,7 +133,7 @@ $(BOOKTABLE Description of supported severities.,
          $(TD Logs an error severity message. Error _log messages are disable
               at compiled time by setting the version to $(I strip_log_error).
               Error _log messages are disable at run time by setting the
-              minimun severity to $(LREF Severity.fatal) or
+              minimum severity to $(LREF Severity.fatal) or
               $(LREF Severity.critical) in $(LREF Configuration). Disabling
               _error _log messages at compile time or at run time also disables
               lower severity messages, e.g. warning and info.))
@@ -274,7 +274,7 @@ unittest
 
 /++
 Conditionally records a log message by checking the severity level and any
-user defined condition. Instances of LogFilter are alised by the $(LREF log) and
+user defined condition. Instances of LogFilter are aliased by the $(LREF log) and
 $(LREF vlog) template and the $(LREF fatal), $(LREF dfatal), $(LREF critical),
 $(LREF error), $(LREF warning) and $(LREF info) aliases.
 
@@ -631,7 +631,7 @@ final class NoopLogFilter
                                                      string file = null)
     { return this; }
 
-    private this() {}
+    private pure this() {}
 
     private static immutable NoopLogFilter _singleton;
 
@@ -640,7 +640,7 @@ final class NoopLogFilter
 
 /++
 Defines the severity levels supported by the logging library. Should be used
-in conjuntion with the log template. See $(LREF log) for an explanation of
+in conjunction with the log template. See $(LREF log) for an explanation of
 their semantic.
 +/
 
@@ -789,7 +789,7 @@ void main(string[] args)
     config.parseCommandLine(args);
 }
 ---
-       This example overrites the default for the minimum severity property and
+       This example overwrites the default for the minimum severity property and
        later configures logging to any configuration option passed through
        the command line.
 
@@ -1022,7 +1022,7 @@ vlog(6)("Don't log this message");
        The format of the configuration string is as follow
        $(I [pattern]=[level],...), where $(I [pattern]) may contain any
        character allowed in a file name and $(I [level]) is convertible to an
-       integer. For an exmplanation of how $(I [pattern]) matches the source
+       integer. For an explanation of how $(I [pattern]) matches the source
        file please see $(XREF path, globMatch).
 
        For every $(I [pattern]=[level]) in the configuration string an entry is
@@ -1116,9 +1116,9 @@ vlog(2)("Verbose message is not logged");
     }
 
     /++
-       Implementation of the $(D Logger) interface used to persiste log messages
+       Implementation of the $(D Logger) interface used to persist log messages
 
-       This property allows the caller to change and configure the backend
+       This property allows the caller to change and configure the back-end
        _logger to a different $(D Logger).
 
        The default value a $(D FileLogger).
@@ -1210,7 +1210,7 @@ void main(string[] args)
     private int[] _moduleLevels;
     private string _vmodule;
 
-    // backend logger variables
+    // back-end logger variables
     private shared Logger _logger;
 
     private ReadWriteMutex _rwmutex;
@@ -1239,7 +1239,7 @@ unittest
     TestWriter.clear();
     passed = 0;
     message.severity = Severity.info;
-    auto logger = new shared(FileLogger)(loggerConfig);
+    auto logger = cast(shared) new FileLogger(loggerConfig);
     logger.log(message);
     foreach(key, ref data; TestWriter.writers)
     {
@@ -1252,7 +1252,7 @@ unittest
     TestWriter.clear();
     passed = 0;
     message.severity = Severity.warning;
-    logger = new shared(FileLogger)(loggerConfig);
+    logger = cast(shared) new FileLogger(loggerConfig);
     logger.log(message);
     foreach(key, ref data; TestWriter.writers)
     {
@@ -1269,7 +1269,7 @@ unittest
 
     loggerConfig.logToStderr = true;
     loggerConfig.stderrThreshold = Severity.error;
-    logger = new shared(FileLogger)(loggerConfig);
+    logger = cast(shared) new FileLogger(loggerConfig);
     logger.log(message);
     foreach(key, ref data; TestWriter.writers)
     {
@@ -1286,7 +1286,7 @@ unittest
     loggerConfig.logToStderr = false;
     loggerConfig.alsoLogToStderr = true;
     loggerConfig.stderrThreshold = Severity.error;
-    logger = new shared(FileLogger)(loggerConfig);
+    logger = cast(shared) new FileLogger(loggerConfig);
     logger.log(message);
     foreach(key, ref data; TestWriter.writers)
     {
@@ -1305,7 +1305,7 @@ unittest
 
     loggerConfig.alsoLogToStderr = false;
     loggerConfig.logDirectory = "dir";
-    logger = new shared(FileLogger)(loggerConfig);
+    logger = cast(shared) new FileLogger(loggerConfig);
     logger.log(message);
     foreach(key, ref data; TestWriter.writers)
     {
@@ -1325,7 +1325,7 @@ unittest
 
     loggerConfig.logDirectory = "";
     loggerConfig.bufferSize = 32;
-    logger = new shared(FileLogger)(loggerConfig);
+    logger = cast(shared) new FileLogger(loggerConfig);
     logger.log(message);
     foreach(key, ref data; TestWriter.writers)
     {
@@ -1339,7 +1339,7 @@ unittest
     passed = 0;
     loggerConfig = FileLogger.Configuration.create();
     loggerConfig.severitySymbols = "12345";
-    logger = new shared(FileLogger)(loggerConfig);
+    logger = cast(shared) new FileLogger(loggerConfig);
     logger.log(message);
     foreach(key, ref data; TestWriter.writers)
     {
@@ -1357,7 +1357,7 @@ unittest
     message.severity = Severity.warning;
     loggerConfig = FileLogger.Configuration.create();
     loggerConfig.fileNamePrefixes(["F", "C", "E", "", "I"]);
-    logger = new shared(FileLogger)(loggerConfig);
+    logger = cast(shared) new FileLogger(loggerConfig);
     logger.log(message);
     foreach(key, ref data; TestWriter.writers)
     {
@@ -2289,10 +2289,10 @@ void name(string[] args) {
         else version(Posix)
         {
             import core.sys.posix.sys.stat; // : S_IFMT
-            import std.file; //: struct_stat64, lstat64;
+            import std.file; //: stat_t, lstat;
 
-            struct_stat64 lstatbuf = void;
-            if (lstat64(toStringz(linkName), &lstatbuf) == 0 &&
+            stat_t lstatbuf = void;
+            if (lstat(toStringz(linkName), &lstatbuf) == 0 &&
                 lstatbuf.st_mode & S_IFMT)
             {
                 remove(linkName);
@@ -2747,7 +2747,7 @@ shared static this()
     try loggerConfig.parseCommandLine(args);
     catch(Exception e) { /+ ignore any error +/ }
 
-    auto logger = new shared(FileLogger)(loggerConfig);
+    auto logger = cast(shared) new FileLogger(loggerConfig);
     config = new Configuration(logger);
 
     try config.parseCommandLine(args);
